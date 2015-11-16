@@ -22,6 +22,7 @@ public class MessageDAO implements MessageDAOInterface {
 
 	/**
 	 * Get MessageDAO object.
+	 * 
 	 * @return
 	 */
 	public static MessageDAO getInstance() {
@@ -35,7 +36,9 @@ public class MessageDAO implements MessageDAOInterface {
 
 	/**
 	 * Find all messages in a conversation
-	 * @param conversationId conversation id.
+	 * 
+	 * @param conversationId
+	 *            conversation id.
 	 */
 	@Override
 	public List<Message> findAllMessages(long conversationId) {
@@ -44,8 +47,11 @@ public class MessageDAO implements MessageDAOInterface {
 
 	/**
 	 * Find a message.
-	 * @param conversationId conversation id.
-	 * @param messageId Message Id.
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param messageId
+	 *            Message Id.
 	 */
 	@Override
 	public Message findMessage(long conversationId, long messageId) {
@@ -55,8 +61,11 @@ public class MessageDAO implements MessageDAOInterface {
 
 	/**
 	 * Insert a message.
-	 * @param conversationId conversation Id
-	 * @param message Message Object.
+	 * 
+	 * @param conversationId
+	 *            conversation Id
+	 * @param message
+	 *            Message Object.
 	 */
 	@Override
 	public Message insertMessage(long conversationId, Message message) {
@@ -68,9 +77,12 @@ public class MessageDAO implements MessageDAOInterface {
 	}
 
 	/**
-	 * Update a  message
-	 * @param conversationId conversation Id
-	 * @param message message object.
+	 * Update a message
+	 * 
+	 * @param conversationId
+	 *            conversation Id
+	 * @param message
+	 *            message object.
 	 */
 	@Override
 	public Message updateMessage(long conversationId, Message message) {
@@ -81,8 +93,11 @@ public class MessageDAO implements MessageDAOInterface {
 
 	/**
 	 * Delete Message in conversation.
-	 * @param conversationId conversation id
-	 * @param messageId Message Id.
+	 * 
+	 * @param conversationId
+	 *            conversation id
+	 * @param messageId
+	 *            Message Id.
 	 */
 	@Override
 	public Message deleteMessage(long conversationId, long messageId) {

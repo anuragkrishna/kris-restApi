@@ -53,7 +53,7 @@ public class Conversation {
 		this.author = author;
 	}
 
-	public Map<Long,Message> getMessages() {
+	public Map<Long, Message> getMessages() {
 		return messages;
 	}
 

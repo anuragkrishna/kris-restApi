@@ -8,7 +8,7 @@ import org.krishna.api.RestfulSocialNetwork.model.Conversation;
 import org.krishna.api.RestfulSocialNetwork.model.Message;
 
 /**
- * Conversartion Service Class.
+ * Conversation Service Class.
  * 
  * @author anurkris
  *
@@ -36,7 +36,7 @@ public class ConversationService {
 	/**
 	 * Add conversation
 	 * 
-	 * @param
+	 * @param conversation conversation object.
 	 */
 	public Conversation createConversation(Conversation conversation) {
 		conversation.setMessages(new HashMap<Long, Message>());
@@ -46,7 +46,7 @@ public class ConversationService {
 	/**
 	 * Update conversation Name
 	 * 
-	 * @param
+	 * @param conversation conversation object
 	 */
 	public Conversation updateConversationName(Conversation conversation) {
 		return ConversationDAO.getInstance().updateConversationName(conversation);
@@ -55,7 +55,7 @@ public class ConversationService {
 	/**
 	 * Update conversation Name
 	 * 
-	 * @param
+	 * @param conversationId conversation Id.
 	 */
 	public Conversation deleteConversation(long conversationId) {
 		return ConversationDAO.getInstance().deleteConversation(conversationId);

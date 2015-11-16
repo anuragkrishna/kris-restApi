@@ -17,5 +17,4 @@ public class Data {
 	public static Map<Long, Conversation> conversationMap = new HashMap<Long, Conversation>();
 	public static Map<String, Profile> profileMap = new HashMap<String, Profile>();
 
-
 }

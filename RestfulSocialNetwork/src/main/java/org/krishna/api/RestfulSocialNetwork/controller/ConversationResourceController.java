@@ -23,6 +23,7 @@ import org.krishna.api.RestfulSocialNetwork.service.ConversationService;
 
 /**
  * Conversation Resource Controller Class.
+ * 
  * @author anurkris
  *
  */
@@ -61,16 +62,19 @@ public class ConversationResourceController {
 		};
 		return Response.status(Status.FOUND).entity(list).build();
 	}
-	
+
 	/**
 	 * Get conversation.
-	 * @param uriInfo uriInfo	
-	 * @param conversationId conversation id
+	 * 
+	 * @param uriInfo
+	 *            uriInfo
+	 * @param conversationId
+	 *            conversation id
 	 * @return
 	 */
 	@GET
 	@Path("/{conversationId}")
-	public Response getConversations(@Context UriInfo uriInfo,@PathParam("conversationId") long conversationId ) {
+	public Response getConversations(@Context UriInfo uriInfo, @PathParam("conversationId") long conversationId) {
 
 		Conversation conversation = getConversationService().getConversation(conversationId);
 		return Response.status(Status.FOUND).entity(conversation).build();
@@ -107,16 +111,16 @@ public class ConversationResourceController {
 	@Path("/{conversationId}")
 	public Response updateConversationName(@PathParam("conversationId") long conversationId,
 			Conversation conversation) {
-	
+
 		Conversation newConversation = getConversationService().updateConversationName(conversation);
 		Response response = Response.status(Status.OK).entity(newConversation).build();
 		return response;
 
 	}
-	
-	
+
 	/**
 	 * Update conversation name.
+	 * 
 	 * @param conversationId
 	 *            conversation id.
 	 * @return
@@ -124,16 +128,14 @@ public class ConversationResourceController {
 	@DELETE
 	@Path("/{conversationId}")
 	public Response deleteConversation(@PathParam("conversationId") long conversationId) {
-	
+
 		getConversationService().deleteConversation(conversationId);
 		return Response.status(Status.OK).build();
 
 	}
-	
-	
+
 	@Path("/{conversationId}/messages")
-	public MessageResourceController getMessageResourceController()
-	{
+	public MessageResourceController getMessageResourceController() {
 		return new MessageResourceController();
 	}
 }

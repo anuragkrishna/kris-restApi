@@ -12,56 +12,63 @@ import org.krishna.api.RestfulSocialNetwork.model.Message;
  *
  */
 public class MessageService {
-	
+
 	/**
 	 * Get all Messages
+	 * 
 	 * @return list of Messages
 	 */
-	public List<Message> getAllMessages(long conversationId)
-	{
+	public List<Message> getAllMessages(long conversationId) {
 		return MessageDAO.getInstance().findAllMessages(conversationId);
 	}
-	
+
 	/**
 	 * Get Message
-	 * @param conversationId conversation id.
-	 * @param messageId message id
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param messageId
+	 *            message id
 	 * @return the message
 	 */
-	public Message getMessage(long conversationId, long messageId)
-	{
-		return MessageDAO.getInstance().findMessage(conversationId,messageId);
+	public Message getMessage(long conversationId, long messageId) {
+		return MessageDAO.getInstance().findMessage(conversationId, messageId);
 	}
-	
+
 	/**
 	 * Add Message
-	 * @param conversationId conversation id.
-	 * @param message message object.
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param message
+	 *            message object.
 	 */
-	public Message createMessage(Long conversationId, Message message)
-	{
+	public Message createMessage(Long conversationId, Message message) {
 		return MessageDAO.getInstance().insertMessage(conversationId, message);
 	}
-	
-	
+
 	/**
 	 * Update Message Name
-	 * @param conversationId conversation id.
-	 * @param message message object.
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param message
+	 *            message object.
 	 */
-	public Message updateMessage(Long conversationId, Message message)
-	{
-		return MessageDAO.getInstance().updateMessage(conversationId,message);
+	public Message updateMessage(Long conversationId, Message message) {
+		return MessageDAO.getInstance().updateMessage(conversationId, message);
 	}
-	
+
 	/**
 	 * Delete Message.
-	 * @param conversationId conversation id.
-	 * @param messageId message id
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param messageId
+	 *            message id
 	 */
-	public Message deleteMessage(Long conversationId,long messageId)
-	{
-		return MessageDAO.getInstance().deleteMessage(conversationId,messageId);
+	public Message deleteMessage(Long conversationId, long messageId) {
+		return MessageDAO.getInstance().deleteMessage(conversationId, messageId);
 	}
 
 }

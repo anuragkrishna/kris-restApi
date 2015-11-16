@@ -38,8 +38,6 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 */
 	@Override
 	public List<Conversation> findAllConversations() {
-
-		System.out.println(Data.conversationMap.values());
 		return new ArrayList<Conversation>(Data.conversationMap.values());
 	}
 
@@ -51,7 +49,6 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 */
 	@Override
 	public Conversation findConversation(long id) {
-
 		return Data.conversationMap.get(new Long(id));
 
 	}
