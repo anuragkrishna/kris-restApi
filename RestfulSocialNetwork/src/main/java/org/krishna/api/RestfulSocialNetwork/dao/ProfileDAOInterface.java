@@ -1,5 +1,6 @@
 package org.krishna.api.RestfulSocialNetwork.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.model.Profile;
@@ -21,4 +22,7 @@ public interface ProfileDAOInterface {
 	Profile updateProfile(Profile profile);
 
 	Profile deleteProfile(String profileName);
+
+	Date getLastModified(String profileName);
+
 }

@@ -1,6 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.controller;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,10 +12,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
@@ -71,10 +76,26 @@ public class ProfileResourceController {
 	 */
 	@GET
 	@Path("/{profileName}")
-	public Response getProfile(@Context UriInfo uriInfo, @PathParam("profileName") String profileName) {
+	public Response getProfile(@Context Request request, @Context UriInfo uriInfo,
+			@PathParam("profileName") String profileName) {
+
+		Date lastModified = getProfileService().getlastModifiedTimeStamp(profileName);
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
+
+		// Cache Control
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setMaxAge(86400);
+
+		ResponseBuilder responseBuilder = request.evaluatePreconditions(etag);
+
+		// If entity tag matches, just send the status not modified
+		if (responseBuilder != null) {
+			return Response.status(Status.NOT_MODIFIED).tag(etag).cacheControl(cacheControl).build();
+		}
 
 		Profile profile = getProfileService().getProfile(profileName);
-		return Response.status(Status.FOUND).entity(profile).build();
+
+		return Response.status(Status.FOUND).tag(etag).cacheControl(cacheControl).entity(profile).build();
 	}
 
 	/**
@@ -92,8 +113,10 @@ public class ProfileResourceController {
 		Profile newProfile = getProfileService().createProfile(Profile);
 		URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newProfile.getName())).build();
 
-		Response response = Response.created(uri).entity(newProfile).build();
-		return response;
+		Date lastModified = newProfile.getLastModified();
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
+
+		return Response.created(uri).tag(etag).entity(newProfile).build();
 
 	}
 
@@ -110,8 +133,10 @@ public class ProfileResourceController {
 
 		Profile newProfile = getProfileService().updateProfile(profile);
 
-		Response response = Response.status(Status.OK).entity(newProfile).build();
-		return response;
+		Date lastModified = newProfile.getLastModified();
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
+
+		return Response.status(Status.OK).tag(etag).entity(newProfile).build();
 
 	}
 

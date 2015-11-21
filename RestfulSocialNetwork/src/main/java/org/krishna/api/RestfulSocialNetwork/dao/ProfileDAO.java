@@ -1,6 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.data.Data;
@@ -65,6 +66,7 @@ public class ProfileDAO implements ProfileDAOInterface {
 			return null;
 		}
 
+		profile.setLastModified(new Date());
 		Data.profileMap.put(profile.getName(), profile);
 		return profile;
 	}
@@ -77,6 +79,7 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public Profile updateProfile(Profile profile) {
+		profile.setLastModified(new Date());
 		Data.profileMap.put(profile.getName(), profile);
 		return profile;
 	}
@@ -92,6 +95,18 @@ public class ProfileDAO implements ProfileDAOInterface {
 		Profile profile = Data.profileMap.get(profileName);
 		Data.profileMap.remove(profileName);
 		return profile;
+	}
+
+	/**
+	 * Get Last modified
+	 * 
+	 * @param profileName
+	 *            Profile N.
+	 */
+	@Override
+	public Date getLastModified(String profileName) {
+		Profile profile = Data.profileMap.get(profileName);
+		return profile.getLastModified();
 	}
 
 }

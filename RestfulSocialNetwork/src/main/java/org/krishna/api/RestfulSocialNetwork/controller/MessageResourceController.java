@@ -1,6 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.controller;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,10 +12,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
@@ -76,11 +81,25 @@ public class MessageResourceController {
 	 */
 	@GET
 	@Path("/{messageId}")
-	public Response getConversations(@Context UriInfo uriInfo, @PathParam("conversationId") long conversationId,
-			@PathParam("messageId") long messageId) {
+	public Response getConversations(@Context Request request, @Context UriInfo uriInfo,
+			@PathParam("conversationId") long conversationId, @PathParam("messageId") long messageId) {
+
+		Date lastModified = getMessageService().getlastModifiedTimeStamp(conversationId, messageId);
+
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setMaxAge(86400);
+
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
+
+		ResponseBuilder responseBuilder = request.evaluatePreconditions(etag);
+
+		// If entity tag matches, just send the status not modified
+		if (responseBuilder != null) {
+			return Response.status(Status.NOT_MODIFIED).tag(etag).cacheControl(cacheControl).build();
+		}
 
 		Message message = getMessageService().getMessage(conversationId, messageId);
-		return Response.status(Status.FOUND).entity(message).build();
+		return Response.status(Status.FOUND).tag(etag).cacheControl(cacheControl).entity(message).build();
 	}
 
 	/**
@@ -99,15 +118,18 @@ public class MessageResourceController {
 			Message Message) {
 
 		Message newMessage = getMessageService().createMessage(conversationId, Message);
+		Date lastModified = newMessage.getLastModified();
+
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
 		URI uri = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newMessage.getId())).build();
 
-		Response response = Response.created(uri).entity(newMessage).build();
+		Response response = Response.created(uri).tag(etag).entity(newMessage).build();
 		return response;
 
 	}
 
 	/**
-	 * Update Message name.
+	 * Update Message.
 	 * 
 	 * @param conversationId
 	 *            conversation id
@@ -123,14 +145,17 @@ public class MessageResourceController {
 			@PathParam("messageId") long MessageId, Message message) {
 
 		Message newMessage = getMessageService().updateMessage(conversationId, message);
+		Date lastModified = newMessage.getLastModified();
 
-		Response response = Response.status(Status.OK).entity(newMessage).build();
+		EntityTag etag = new EntityTag(String.valueOf(lastModified.hashCode()));
+
+		Response response = Response.status(Status.OK).tag(etag).entity(newMessage).build();
 		return response;
 
 	}
 
 	/**
-	 * Update Message name.
+	 * Delete Message.
 	 * 
 	 * @param conversationId
 	 *            conversation id

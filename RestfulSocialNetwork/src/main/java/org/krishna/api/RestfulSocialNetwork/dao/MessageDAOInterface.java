@@ -1,5 +1,6 @@
 package org.krishna.api.RestfulSocialNetwork.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.model.Message;
@@ -21,4 +22,7 @@ public interface MessageDAOInterface {
 	Message updateMessage(long conversationId, Message Message);
 
 	Message deleteMessage(long conversationId, long MessageId);
+
+	Date getLastModified(long conversationId, long MessageId);
+
 }

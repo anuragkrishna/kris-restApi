@@ -1,5 +1,6 @@
 package org.krishna.api.RestfulSocialNetwork.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class ConversationService {
 	/**
 	 * Add conversation
 	 * 
-	 * @param conversation conversation object.
+	 * @param conversation
+	 *            conversation object.
 	 */
 	public Conversation createConversation(Conversation conversation) {
 		conversation.setMessages(new HashMap<Long, Message>());
@@ -46,7 +48,8 @@ public class ConversationService {
 	/**
 	 * Update conversation Name
 	 * 
-	 * @param conversation conversation object
+	 * @param conversation
+	 *            conversation object
 	 */
 	public Conversation updateConversationName(Conversation conversation) {
 		return ConversationDAO.getInstance().updateConversationName(conversation);
@@ -55,10 +58,21 @@ public class ConversationService {
 	/**
 	 * Update conversation Name
 	 * 
-	 * @param conversationId conversation Id.
+	 * @param conversationId
+	 *            conversation Id.
 	 */
 	public Conversation deleteConversation(long conversationId) {
 		return ConversationDAO.getInstance().deleteConversation(conversationId);
+	}
+
+	/**
+	 * Get last modified time stamp.
+	 * 
+	 * @param conversationId
+	 *            conversation Id.
+	 */
+	public Date getlastModifiedTimeStamp(long conversationId) {
+		return ConversationDAO.getInstance().getLastModified((conversationId));
 	}
 
 }

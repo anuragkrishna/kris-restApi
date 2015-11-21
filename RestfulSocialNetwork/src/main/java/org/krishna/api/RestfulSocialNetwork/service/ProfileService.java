@@ -1,5 +1,6 @@
 package org.krishna.api.RestfulSocialNetwork.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.dao.ProfileDAO;
@@ -58,11 +59,21 @@ public class ProfileService {
 	/**
 	 * Delete Profile.
 	 * 
-	 * @param profile
-	 *            profile object.
+	 * @param profileName
+	 *            profile name.
 	 * @return the profile
 	 */
 	public Profile deleteProfile(String profileName) {
 		return ProfileDAO.getInstance().deleteProfile(profileName);
+	}
+
+	/**O
+	 * Get last modified time stamp.
+	 * 
+	 * @param profileName
+	 *            profile name.
+	 */
+	public Date getlastModifiedTimeStamp(String profileName) {
+		return ProfileDAO.getInstance().getLastModified(profileName);
 	}
 }

@@ -1,5 +1,6 @@
 package org.krishna.api.RestfulSocialNetwork.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.dao.MessageDAO;
@@ -71,4 +72,15 @@ public class MessageService {
 		return MessageDAO.getInstance().deleteMessage(conversationId, messageId);
 	}
 
+	/**
+	 * Get last modified time stamp.
+	 * 
+	 * @param conversationId
+	 *            conversation id.
+	 * @param messageId
+	 *            message id
+	 */
+	public Date getlastModifiedTimeStamp(Long conversationId, long messageId) {
+		return MessageDAO.getInstance().getLastModified(conversationId, messageId);
+	}
 }

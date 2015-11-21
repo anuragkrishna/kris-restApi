@@ -1,6 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.krishna.api.RestfulSocialNetwork.data.Data;
@@ -63,6 +64,7 @@ public class ConversationDAO implements ConversationDAOInterface {
 	public Conversation insertConversation(Conversation conversation) {
 
 		conversation.setId(Data.conversationMap.size() + 1);
+		conversation.setLastModified(new Date());
 		Data.conversationMap.put(new Long(conversation.getId()), conversation);
 		return conversation;
 
@@ -78,6 +80,7 @@ public class ConversationDAO implements ConversationDAOInterface {
 	public Conversation updateConversationName(Conversation conversation) {
 
 		Conversation conv = Data.conversationMap.get(new Long(conversation.getId()));
+		conv.setLastModified(new Date());
 		conv.setName(conversation.getName());
 		return conv;
 	}
@@ -94,6 +97,18 @@ public class ConversationDAO implements ConversationDAOInterface {
 		Conversation conversation = Data.conversationMap.remove(new Long(conversationId));
 		return conversation;
 
+	}
+
+	/**
+	 * Get Last modified
+	 * 
+	 * @param conversationId
+	 *            conversation Id.
+	 */
+	@Override
+	public Date getLastModified(long conversationId) {
+		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
+		return conversation.getLastModified();
 	}
 
 }

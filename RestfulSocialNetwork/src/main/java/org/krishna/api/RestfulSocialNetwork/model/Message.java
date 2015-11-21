@@ -1,5 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,6 +16,7 @@ public class Message {
 	private long id;
 	private String author;
 	private String message;
+	private Date lastModified;
 
 	public Message() {
 
@@ -48,6 +51,14 @@ public class Message {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 
 }

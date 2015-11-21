@@ -1,5 +1,7 @@
 package org.krishna.api.RestfulSocialNetwork.model;
 
+import java.util.Date;
+
 /**
  * Profile Model Class.
  * 
@@ -10,6 +12,7 @@ public class Profile {
 
 	private String name;
 	private String age;
+	private Date lastModified;
 
 	public Profile() {
 
@@ -33,6 +36,14 @@ public class Profile {
 
 	public void setAge(String age) {
 		this.age = age;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 
 }
