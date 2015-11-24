@@ -61,22 +61,24 @@ Example:
 CRUD Operations:
 
 Conversations:
-GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/
 
-POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/
-		Sample Request - {
-							"name":"SampleConversation",
-							"author":"anurag"
-						}
-GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
+	1. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/
 
-PUT - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
-		Sample Request - {
-							"id"=<id>
-							"name":"ChangedSampleConversation",
-							"author":"anurag"
-						}
-DELETE - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}	
+	2. POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/
+		   Request - {
+					"name":"SampleConversation",
+					"author":"anurag"
+				}
+	3. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
+
+	4. PUT - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
+		  Request - {
+					"id"=<id>
+					"name":"ChangedSampleConversation",
+					"author":"anurag"
+				}
+
+	5. DELETE - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}	
 
 
 Messages:
