@@ -17,12 +17,12 @@ Example:
 
 	1. POST - localhost:8080/RestfulSocialNetwork/webapi/authentication
 	   	Request: 	Headers - username = <username>
-							  password = <password> 	
+					  password = <password> 	
 
 	2. GET - localhost:8080/RestfulSocialNetwork/webapi/authentication
 		  Request:		Headers - username = <username>
-							  password = <password> 
-		  Response: Cookie(Name="X-AUTH-TOKEN", Value=<RandonmToken>) - 									     Use this to access resources (Looking for JWT ?)
+						  password = <password> 
+		  Response: Cookie(Name="X-AUTH-TOKEN", Value=<RandonmToken>)  												Use this to access resources (Looking for JWT ?)
 
 
 Caching:
