@@ -3,6 +3,7 @@ A restful api for collaboration system.
 
 Structure:
 	Conversations with messages
+	
 	User Profiles.	
 
 	
