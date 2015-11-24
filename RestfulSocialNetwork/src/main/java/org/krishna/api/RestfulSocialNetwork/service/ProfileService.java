@@ -67,8 +67,8 @@ public class ProfileService {
 		return ProfileDAO.getInstance().deleteProfile(profileName);
 	}
 
-	/**O
-	 * Get last modified time stamp.
+	/**
+	 * O Get last modified time stamp.
 	 * 
 	 * @param profileName
 	 *            profile name.

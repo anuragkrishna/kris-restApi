@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.krishna.api.RestfulSocialNetwork.filters.Secured;
 import org.krishna.api.RestfulSocialNetwork.model.Profile;
 import org.krishna.api.RestfulSocialNetwork.service.ProfileService;
 
@@ -32,6 +33,7 @@ import org.krishna.api.RestfulSocialNetwork.service.ProfileService;
  * @author anurkris
  *
  */
+@Secured
 @Path("/profiles")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

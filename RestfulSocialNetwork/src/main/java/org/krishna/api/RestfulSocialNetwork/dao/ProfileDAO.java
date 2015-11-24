@@ -15,7 +15,7 @@ import org.krishna.api.RestfulSocialNetwork.model.Profile;
  */
 public class ProfileDAO implements ProfileDAOInterface {
 
-	private static ProfileDAO ProfileDAO;
+	private static ProfileDAO profileDAO;
 
 	private ProfileDAO() {
 	}
@@ -26,11 +26,11 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 * @return
 	 */
 	public static ProfileDAO getInstance() {
-		if (ProfileDAO != null) {
-			return ProfileDAO;
+		if (profileDAO != null) {
+			return profileDAO;
 		}
-		ProfileDAO = new ProfileDAO();
-		return ProfileDAO;
+		profileDAO = new ProfileDAO();
+		return profileDAO;
 
 	}
 
