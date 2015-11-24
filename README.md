@@ -1,5 +1,5 @@
 # kris-restApi 
-A restful api for social network. 
+A restful api for collaboration system. 
 
 Structure:
 	Conversations with messages
