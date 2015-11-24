@@ -22,7 +22,7 @@ Example:
 	2. GET - localhost:8080/RestfulSocialNetwork/webapi/authentication
 		  Request:		Headers - username = <username>
 						  password = <password> 
-		  Response: Cookie(Name="X-AUTH-TOKEN", Value=<RandonmToken>)  												Use this to access resources (Looking for JWT ?)
+		  Response: Cookie(Name="X-AUTH-TOKEN", Value=<RandonmToken>)										Use this to access resources (Looking for JWT ?)
 
 
 Caching:
@@ -83,6 +83,7 @@ Conversations:
 
 
 Messages:
+
 	1. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages
 
 	2. POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages/
