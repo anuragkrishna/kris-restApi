@@ -1,5 +1,5 @@
 # kris-restApi 
-A restful api for collaboration system. 
+A RESTful api for collaboration system. 
 
 Structure:
 	Conversations with messages
@@ -16,11 +16,11 @@ It uses token based authentication:
 
 Example:
 
-	1. POST - localhost:8080/RestfulSocialNetwork/webapi/authentication
+	1. POST - localhost:8080/collaboration/webapi/authentication
 	   	Request: 	Headers - username = <username>
 					  password = <password> 	
 
-	2. GET - localhost:8080/RestfulSocialNetwork/webapi/authentication
+	2. GET - localhost:8080/collaboration/webapi/authentication
 		  Request:		Headers - username = <username>
 						  password = <password> 
 		  Response: Cookie(Name="X-AUTH-TOKEN", Value=<RandonmToken>)										Use this to access resources (Looking for JWT ?)
@@ -32,7 +32,7 @@ The API provides support for client side caching using conditional GET.
 Example:
 
  	1. Create a Resource - say a conversation
-		Request :   Method - POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/
+		Request :   Method - POST - localhost:8080/collaboration/webapi/conversations/
 					Body   - {
 								"name":"myConversation",
 								"author":"anurag"
@@ -43,7 +43,7 @@ Example:
 		Response - 201 Created along with the entity tag.(ETag)
 
 	2. Get the resource:
-		Request : Method - GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/
+		Request : Method - GET - localhost:8080/collaboration/webapi/conversations/
 				  Header - username = <username>
 				  If-None-Match = <ETag>
 				 
@@ -64,30 +64,30 @@ CRUD Operations:
 
 Conversations:
 
-	1. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/
+	1. GET - localhost:8080/collaboration/webapi/conversations/
 
-	2. POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/
+	2. POST - localhost:8080/collaboration/webapi/conversations/
 		   Request - {
 					"name":"SampleConversation",
 					"author":"anurag"
 				}
-	3. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
+	3. GET - localhost:8080/collaboration/webapi/conversations/{id}
 
-	4. PUT - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}
+	4. PUT - localhost:8080/collaboration/webapi/conversations/{id}
 		  Request - {
 					"id"=<id>
 					"name":"ChangedSampleConversation",
 					"author":"anurag"
 				}
 
-	5. DELETE - localhost:8080/RestfulSocialNetwork/webapi/conversations/{id}	
+	5. DELETE - localhost:8080/collaboration/webapi/conversations/{id}	
 
 
 Messages:
 
-	1. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages
+	1. GET - localhost:8080/collaboration/webapi/conversations/{conversationId}/messages
 
-	2. POST - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages/
+	2. POST - localhost:8080/collaboration/webapi/conversations/{conversationId}/messages/
 		 Request - {
 					"message":"Is this you ?",
 					"author":"anurag"
@@ -98,14 +98,14 @@ Messages:
 					"lastModified": "2015-11-24T10:04:03.866+05:30",
 					"message": "Is this you ?"
 				}				
-	3. GET - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages/{messageId}
+	3. GET - localhost:8080/collaboration/webapi/conversations/{conversationId}/messages/{messageId}
 		Response - {
 					"author": "anurag",
 					"id": 1,
 					"lastModified": "2015-11-24T10:04:03.866+05:30",
 					"message": "Is this you ?"
 				}			
-	4. PUT - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages/{messageId}
+	4. PUT - localhost:8080/collaboration/webapi/conversations/{conversationId}/messages/{messageId}
 		Request - {
 					"id" : "1",
 					"message":"Yes it is me ?",
@@ -117,13 +117,13 @@ Messages:
 					"lastModified": "2015-11-24T10:04:03.866+05:30",
 					"message": "Yes it is me ?"
 				}		
-	5. DELETE - localhost:8080/RestfulSocialNetwork/webapi/conversations/{conversationId}/messages/{messageId}
+	5. DELETE - localhost:8080/collaboration/webapi/conversations/{conversationId}/messages/{messageId}
 
 Profile:
 
-	1. GET - localhost:8080/RestfulSocialNetwork/webapi/profiles/
+	1. GET - localhost:8080/collaboration/webapi/profiles/
 	
-	2. POST - localhost:8080/RestfulSocialNetwork/webapi/profiles/
+	2. POST - localhost:8080/collaboration/webapi/profiles/
 		Request - {
 					"name":"anurag",
 					"age":"26"
@@ -133,13 +133,13 @@ Profile:
 					"lastModified": "2015-11-24T10:08:24.742+05:30",
 					"name": "anurag"
 				}				
-	3. GET - localhost:8080/RestfulSocialNetwork/webapi/profiles/{profileName}
+	3. GET - localhost:8080/collaboration/webapi/profiles/{profileName}
 		Response - {
 					"age": "26",
 					"lastModified": "2015-11-24T10:08:24.742+05:30",
 					"name": "anurag"
 				}		
-	4. PUT - localhost:8080/RestfulSocialNetwork/webapi/profiles/{profileName}
+	4. PUT - localhost:8080/collaboration/webapi/profiles/{profileName}
 		Request - {
 					"name":"anurag",
 					"age":"45"
@@ -150,4 +150,4 @@ Profile:
 					"name": "anurag"
 				}	
 
-	5. DELETE - localhost:8080/RestfulSocialNetwork/webapi/profiles/{profileName}					
+	5. DELETE - localhost:8080/collaboration/webapi/profiles/{profileName}					
