@@ -86,7 +86,7 @@ public class MessageResourceController {
 	public Response getConversations(@Context Request request, @Context UriInfo uriInfo,
 			@PathParam("conversationId") long conversationId, @PathParam("messageId") long messageId) {
 
-		Date lastModified = getMessageService().getlastModifiedTimeStamp(conversationId, messageId);
+		Date lastModified = getMessageService().getlastModifiedTimeStamp(messageId);
 
 		CacheControl cacheControl = new CacheControl();
 		cacheControl.setMaxAge(86400);
@@ -100,7 +100,7 @@ public class MessageResourceController {
 			return Response.status(Status.NOT_MODIFIED).tag(etag).cacheControl(cacheControl).build();
 		}
 
-		Message message = getMessageService().getMessage(conversationId, messageId);
+		Message message = getMessageService().getMessage(messageId);
 		return Response.status(Status.FOUND).tag(etag).cacheControl(cacheControl).entity(message).build();
 	}
 
@@ -167,9 +167,9 @@ public class MessageResourceController {
 	@DELETE
 	@Path("/{messageId}")
 	public Response deleteMessage(@PathParam("conversationId") Long conversationId,
-			@PathParam("MessageId") long MessageId) {
+			@PathParam("messageId") long messageId) {
 
-		getMessageService().deleteMessage(conversationId, MessageId);
+		getMessageService().deleteMessage(messageId);
 		return Response.status(Status.OK).build();
 
 	}

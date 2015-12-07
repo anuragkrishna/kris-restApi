@@ -1,7 +1,9 @@
 package org.krishna.api.collaboration.dao;
 
-import org.krishna.api.collaboration.data.Data;
+import org.hibernate.Session;
 import org.krishna.api.collaboration.model.Credentials;
+import org.krishna.api.collaboration.model.Token;
+import org.krishna.api.collaboration.util.HibernateUtil;
 
 /**
  * User credential Data Access Object Class.f
@@ -12,6 +14,7 @@ import org.krishna.api.collaboration.model.Credentials;
 public class CredentialsDAO implements CredentialsDAOInterface {
 
 	private static CredentialsDAO credentialsDAO;
+	private Session session = null;
 
 	private CredentialsDAO() {
 	}
@@ -38,10 +41,11 @@ public class CredentialsDAO implements CredentialsDAOInterface {
 	 * @return
 	 */
 	public boolean insertCredential(Credentials credential) {
-		if (Data.credentialsMap.get(credential.getUsername()) != null) {
-			return false;
-		}
-		Data.credentialsMap.put(credential.getUsername(), credential);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(credential);
+		session.getTransaction().commit();
+		session.close();
 		return true;
 	}
 
@@ -53,23 +57,35 @@ public class CredentialsDAO implements CredentialsDAOInterface {
 	 * @return
 	 */
 	public Credentials findCredential(String username) {
-		return Data.credentialsMap.get(username);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Credentials credentials = session.get(Credentials.class, username);
+		session.getTransaction().commit();
+		session.close();
+		return credentials;
 	}
 
 	/**
 	 * Update user credential.
 	 * 
-	 * @param credential
-	 *            user credential
+	 * @param credentials
+	 *            user credentials
 	 * @return
 	 */
-	public boolean updateCredential(Credentials credential) {
-
-		if (Data.credentialsMap.get(credential.getUsername()) != null) {
-			Data.credentialsMap.put(credential.getUsername(), credential);
-			return true;
+	public boolean updateCredential(Credentials credentials) {
+		
+		boolean retVal = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Credentials dCredentials = session.get(Credentials.class, credentials.getUsername());
+		if(dCredentials!=null)
+		{
+			dCredentials.setPassword(credentials.getPassword());
+			retVal = true;
 		}
-		return false;
+		session.getTransaction().commit();
+		session.close();
+		return retVal;
 	}
 
 	/**
@@ -79,12 +95,61 @@ public class CredentialsDAO implements CredentialsDAOInterface {
 	 *            user credential
 	 * @return
 	 */
-	public boolean deleteCredential(Credentials credential) {
+	public boolean deleteCredential(Credentials credentials) {
 
-		if (Data.credentialsMap.get(credential.getUsername()) != null) {
-			Data.credentialsMap.remove(credential.getUsername());
-			return true;
+		boolean retVal = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Credentials dCredentials = session.get(Credentials.class, credentials.getUsername());
+		if(dCredentials!=null)
+		{
+			session.delete(dCredentials);
+			retVal = true;
 		}
-		return false;
+		session.getTransaction().commit();
+		session.close();
+		return retVal;
 	}
+	
+	
+	/**
+	 * Insert Token
+	 * 
+	 * @param tokenVal
+	 *            Token value
+	 * @param userName
+	 *            user name.
+	 * @return
+	 */
+	public boolean insertToken(long tokenVal, Credentials credentials) {
+		Token token = new Token();
+		credentials.setToken(token);
+		token.setTokenVal(tokenVal);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(token);
+		session.update(credentials);
+		session.getTransaction().commit();
+		session.close();
+		return true;
+	}
+
+	/**
+	 * Find Token
+	 * 
+	 * @param val
+	 *            token value
+	 * @return
+	 */
+	public long findUserToken(String userName) {
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Credentials credentials = session.get(Credentials.class, userName);
+		Token token = credentials.getToken();
+		session.getTransaction().commit();
+		session.close();
+		System.out.println(token);
+		return token.getTokenVal();
+	}
+
 }

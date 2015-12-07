@@ -15,14 +15,14 @@ public interface MessageDAOInterface {
 
 	List<Message> findAllMessages(long conversationId);
 
-	Message findMessage(long conversationId, long messageId);
+	Message findMessage(long messageId);
 
-	Message insertMessage(long conversationId, Message Message);
+	Message insertMessage(Message Message);
 
-	Message updateMessage(long conversationId, Message Message);
+	Message updateMessage(Message Message);
 
-	Message deleteMessage(long conversationId, long MessageId);
+	Message deleteMessage(long MessageId);
 
-	Date getLastModified(long conversationId, long MessageId);
+	Date getLastModified(long MessageId);
 
 }

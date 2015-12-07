@@ -52,12 +52,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 		String trimToken = authCookie.getValue().trim();
 
-		if (getAuthenticationService().findToken(trimToken) == null) {
+		if (getAuthenticationService().findUserToken(username) == null) {
 			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
 
 		}
 
-		if (!getAuthenticationService().findToken(trimToken).getUsername().equals(username)) {
+		if (!getAuthenticationService().findUserToken(username).equals(Long.valueOf(trimToken))) {
 			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
 
 		}

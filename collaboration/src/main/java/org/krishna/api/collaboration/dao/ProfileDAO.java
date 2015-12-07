@@ -1,11 +1,12 @@
 package org.krishna.api.collaboration.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.krishna.api.collaboration.data.Data;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.krishna.api.collaboration.model.Profile;
+import org.krishna.api.collaboration.util.HibernateUtil;
 
 /**
  * Profile Data Access Object Class.
@@ -16,6 +17,7 @@ import org.krishna.api.collaboration.model.Profile;
 public class ProfileDAO implements ProfileDAOInterface {
 
 	private static ProfileDAO profileDAO;
+	private Session session = null;
 
 	private ProfileDAO() {
 	}
@@ -39,7 +41,13 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public List<Profile> findAllProfiles() {
-		return new ArrayList<Profile>(Data.profileMap.values());
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Query query = session.createQuery("from Profile");
+		List<Profile> list = (List<Profile>)query.list();
+		session.getTransaction().commit();		
+		session.close();
+		return list;
 	}
 
 	/**
@@ -50,7 +58,12 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public Profile findProfile(String profileName) {
-		return Data.profileMap.get(profileName);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Profile profile = session.get(Profile.class, profileName);
+		session.getTransaction().commit();
+		session.close();
+		return profile;
 
 	}
 
@@ -62,12 +75,12 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public Profile insertProfile(Profile profile) {
-		if (Data.profileMap.get(profile.getName()) != null) {
-			return null;
-		}
-
 		profile.setLastModified(new Date());
-		Data.profileMap.put(profile.getName(), profile);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(profile);
+		session.getTransaction().commit();
+		session.close();
 		return profile;
 	}
 
@@ -80,8 +93,13 @@ public class ProfileDAO implements ProfileDAOInterface {
 	@Override
 	public Profile updateProfile(Profile profile) {
 		profile.setLastModified(new Date());
-		Data.profileMap.put(profile.getName(), profile);
-		return profile;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Profile dProfile = session.get(Profile.class, profile.getName());
+		dProfile.setAge(profile.getAge());
+		session.getTransaction().commit();
+		session.close();		
+		return dProfile;
 	}
 
 	/**
@@ -92,9 +110,13 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public Profile deleteProfile(String profileName) {
-		Profile profile = Data.profileMap.get(profileName);
-		Data.profileMap.remove(profileName);
-		return profile;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Profile dProfile = session.get(Profile.class,profileName);
+		session.delete(dProfile);
+		session.getTransaction().commit();
+		session.close();		
+		return dProfile;
 	}
 
 	/**
@@ -105,8 +127,13 @@ public class ProfileDAO implements ProfileDAOInterface {
 	 */
 	@Override
 	public Date getLastModified(String profileName) {
-		Profile profile = Data.profileMap.get(profileName);
-		return profile.getLastModified();
+		Date lastModified = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		lastModified = session.get(Profile.class, profileName).getLastModified();
+		session.getTransaction().commit();
+		session.close();
+		return lastModified;
 	}
 
 }

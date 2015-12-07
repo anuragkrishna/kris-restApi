@@ -26,14 +26,12 @@ public class MessageService {
 	/**
 	 * Get Message
 	 * 
-	 * @param conversationId
-	 *            conversation id.
 	 * @param messageId
 	 *            message id
 	 * @return the message
 	 */
-	public Message getMessage(long conversationId, long messageId) {
-		return MessageDAO.getInstance().findMessage(conversationId, messageId);
+	public Message getMessage(long messageId) {
+		return MessageDAO.getInstance().findMessage(messageId);
 	}
 
 	/**
@@ -45,7 +43,8 @@ public class MessageService {
 	 *            message object.
 	 */
 	public Message createMessage(Long conversationId, Message message) {
-		return MessageDAO.getInstance().insertMessage(conversationId, message);
+		message.setConversationId(conversationId);
+		return MessageDAO.getInstance().insertMessage(message);
 	}
 
 	/**
@@ -57,30 +56,27 @@ public class MessageService {
 	 *            message object.
 	 */
 	public Message updateMessage(Long conversationId, Message message) {
-		return MessageDAO.getInstance().updateMessage(conversationId, message);
+		message.setConversationId(conversationId);
+		return MessageDAO.getInstance().updateMessage(message);
 	}
 
 	/**
 	 * Delete Message.
 	 * 
-	 * @param conversationId
-	 *            conversation id.
 	 * @param messageId
 	 *            message id
 	 */
-	public Message deleteMessage(Long conversationId, long messageId) {
-		return MessageDAO.getInstance().deleteMessage(conversationId, messageId);
+	public Message deleteMessage(long messageId) {
+		return MessageDAO.getInstance().deleteMessage(messageId);
 	}
 
 	/**
 	 * Get last modified time stamp.
 	 * 
-	 * @param conversationId
-	 *            conversation id.
 	 * @param messageId
 	 *            message id
 	 */
-	public Date getlastModifiedTimeStamp(Long conversationId, long messageId) {
-		return MessageDAO.getInstance().getLastModified(conversationId, messageId);
+	public Date getlastModifiedTimeStamp(long messageId) {
+		return MessageDAO.getInstance().getLastModified(messageId);
 	}
 }

@@ -1,12 +1,10 @@
 package org.krishna.api.collaboration.service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.krishna.api.collaboration.dao.ConversationDAO;
 import org.krishna.api.collaboration.model.Conversation;
-import org.krishna.api.collaboration.model.Message;
 
 /**
  * Conversation Service Class.
@@ -41,7 +39,6 @@ public class ConversationService {
 	 *            conversation object.
 	 */
 	public Conversation createConversation(Conversation conversation) {
-		conversation.setMessages(new HashMap<Long, Message>());
 		return ConversationDAO.getInstance().insertConversation(conversation);
 	}
 

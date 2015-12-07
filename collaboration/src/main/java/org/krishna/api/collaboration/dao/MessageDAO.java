@@ -1,12 +1,12 @@
 package org.krishna.api.collaboration.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.krishna.api.collaboration.data.Data;
-import org.krishna.api.collaboration.model.Conversation;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.krishna.api.collaboration.model.Message;
+import org.krishna.api.collaboration.util.HibernateUtil;
 
 /**
  * Message Data Access Object Class.
@@ -17,6 +17,7 @@ import org.krishna.api.collaboration.model.Message;
 public class MessageDAO implements MessageDAOInterface {
 
 	private static MessageDAO MessageDAO;
+	private Session session = null;
 
 	private MessageDAO() {
 	}
@@ -43,7 +44,16 @@ public class MessageDAO implements MessageDAOInterface {
 	 */
 	@Override
 	public List<Message> findAllMessages(long conversationId) {
-		return new ArrayList<Message>(Data.conversationMap.get(new Long(conversationId)).getMessages().values());
+
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Query query = session.getNamedQuery("findAllMessages").setString("conversationId",
+				String.valueOf(conversationId));
+		List<Message> messages = query.list();
+		session.getTransaction().commit();
+		session.close();
+
+		return messages;
 	}
 
 	/**
@@ -55,9 +65,15 @@ public class MessageDAO implements MessageDAOInterface {
 	 *            Message Id.
 	 */
 	@Override
-	public Message findMessage(long conversationId, long messageId) {
-		return Data.conversationMap.get(new Long(conversationId)).getMessages().get(new Long(messageId));
+	public Message findMessage(long messageId) {
 
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Message message = session.get(Message.class, messageId);
+		session.getTransaction().commit();
+		session.close();
+
+		return message;
 	}
 
 	/**
@@ -69,17 +85,15 @@ public class MessageDAO implements MessageDAOInterface {
 	 *            Message Object.
 	 */
 	@Override
-	public Message insertMessage(long conversationId, Message message) {
-		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
-		long id = conversation.getMessages().size() + 1;
-		message.setId(id);
+	public Message insertMessage(Message message) {
 
-		// Set last modified.
 		Date now = new Date();
 		message.setLastModified(now);
-		conversation.setLastModified(now);
-
-		conversation.getMessages().put(id, message);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(message);
+		session.getTransaction().commit();
+		session.close();
 
 		return message;
 	}
@@ -93,15 +107,18 @@ public class MessageDAO implements MessageDAOInterface {
 	 *            message object.
 	 */
 	@Override
-	public Message updateMessage(long conversationId, Message message) {
-		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
+	public Message updateMessage(Message message) {
 
-		// set last modified.
 		Date now = new Date();
 		message.setLastModified(now);
-		conversation.setLastModified(now);
 
-		conversation.getMessages().put(message.getId(), message);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Message dMessage = session.get(Message.class, message.getId());
+		dMessage.setPost(message.getPost());
+		session.getTransaction().commit();
+		session.close();
+
 		return message;
 	}
 
@@ -114,11 +131,15 @@ public class MessageDAO implements MessageDAOInterface {
 	 *            Message Id.
 	 */
 	@Override
-	public Message deleteMessage(long conversationId, long messageId) {
-		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
-		Message toRemoveMessage = conversation.getMessages().get(new Long(messageId));
-		conversation.getMessages().remove(new Long(messageId));
-		return toRemoveMessage;
+	public Message deleteMessage(long messageId) {
+
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Message message = session.get(Message.class, messageId);
+		session.delete(message);
+		session.getTransaction().commit();
+		session.close();
+		return message;
 	}
 
 	/**
@@ -130,9 +151,13 @@ public class MessageDAO implements MessageDAOInterface {
 	 *            Message Id.
 	 */
 	@Override
-	public Date getLastModified(long conversationId, long messageId) {
-		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
-		Message message = conversation.getMessages().get(new Long(messageId));
-		return message.getLastModified();
+	public Date getLastModified(long messageId) {
+		Date lastModified = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		lastModified = session.get(Message.class, messageId).getLastModified();
+		session.getTransaction().commit();
+		session.close();
+		return lastModified;
 	}
 }

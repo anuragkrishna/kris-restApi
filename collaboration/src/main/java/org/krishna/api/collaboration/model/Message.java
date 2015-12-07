@@ -2,6 +2,13 @@ package org.krishna.api.collaboration.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,12 +17,31 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anurkris
  *
  */
+@NamedQueries({
+	@NamedQuery(
+	name = "findAllMessages",
+	query = "from Message m where m.conversationId = :conversationId"
+	)
+})
+@Entity
+@Table(name="messages")
 @XmlRootElement
 public class Message {
 
+	@Id @GeneratedValue
+	@Column(name="message_id")
 	private long id;
+	
+	@Column(name="conversation_id")
+	private long conversationId;
+
+	@Column(name="message_author")
 	private String author;
-	private String message;
+	
+	@Column(name="message_post")
+	private String post;
+	
+	@Column(name="message_lastModified")
 	private Date lastModified;
 
 	public Message() {
@@ -25,7 +51,7 @@ public class Message {
 	public Message(long id, String author, String message) {
 		this.id = id;
 		this.author = author;
-		this.message = message;
+		this.post = message;
 
 	}
 
@@ -45,12 +71,20 @@ public class Message {
 		this.author = author;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getPost() {
+		return post;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setPost(String post) {
+		this.post = post;
+	}
+	
+	public long getConversationId() {
+		return conversationId;
+	}
+
+	public void setConversationId(long conversationId) {
+		this.conversationId = conversationId;
 	}
 
 	public Date getLastModified() {

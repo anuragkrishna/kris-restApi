@@ -1,8 +1,17 @@
 package org.krishna.api.collaboration.model;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -13,13 +22,28 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  */
 @XmlRootElement
+@Entity
+@Table(name="conversations")
 public class Conversation {
 
+	@Id
+	@GeneratedValue
+	@Column(name="conversation_id")
 	private long id;
+	
+	@Column(name="conversation_name")
 	private String name;
+	
+	@Column(name="conversation_author")
 	private String author;
+
+	@Transient
 	@XmlTransient
-	private Map<Long, Message> messages;
+	@ElementCollection
+	@CollectionTable(name="message", joinColumns=@JoinColumn(name="conversation_id"))
+	private Collection<Message> messages;
+
+	@Column(name="conversation_lastmodified")
 	private Date lastModified;
 
 	public Conversation() {
@@ -55,11 +79,11 @@ public class Conversation {
 		this.author = author;
 	}
 
-	public Map<Long, Message> getMessages() {
+	public Collection<Message> getMessages() {
 		return messages;
 	}
 
-	public void setMessages(Map<Long, Message> messages) {
+	public void setMessages(Collection<Message> messages) {
 		this.messages = messages;
 	}
 

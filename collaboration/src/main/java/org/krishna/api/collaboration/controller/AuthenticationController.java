@@ -49,7 +49,7 @@ public class AuthenticationController {
 		String tokenVal = null;
 		if (getAuthenticationService().authenticate(username, password)) {
 
-			tokenVal = getAuthenticationService().generateToken(new Credentials(username, password));
+			tokenVal = getAuthenticationService().generateToken(new Credentials(username,password));
 			return Response.status(Status.OK).cookie(new NewCookie("X-AUTH-TOKEN", tokenVal)).build();
 		}
 		return Response.status(Status.UNAUTHORIZED).build();

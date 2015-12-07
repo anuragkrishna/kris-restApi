@@ -1,11 +1,12 @@
 package org.krishna.api.collaboration.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.krishna.api.collaboration.data.Data;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.krishna.api.collaboration.model.Conversation;
+import org.krishna.api.collaboration.util.HibernateUtil;
 
 /**
  * Conversation Data Access Object Class.
@@ -16,7 +17,8 @@ import org.krishna.api.collaboration.model.Conversation;
 public class ConversationDAO implements ConversationDAOInterface {
 
 	private static ConversationDAO conversationDAO;
-
+	private Session session = null;
+	
 	private ConversationDAO() {
 	}
 
@@ -39,7 +41,13 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 */
 	@Override
 	public List<Conversation> findAllConversations() {
-		return new ArrayList<Conversation>(Data.conversationMap.values());
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Query query = session.createQuery("from Conversation");
+		List<Conversation> list = (List<Conversation>)query.list();
+		session.getTransaction().commit();		
+		session.close();
+		return list;
 	}
 
 	/**
@@ -49,8 +57,15 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 *            conversation id.
 	 */
 	@Override
-	public Conversation findConversation(long id) {
-		return Data.conversationMap.get(new Long(id));
+	public Conversation findConversation(long conversationId) 
+	{
+		Conversation conversation = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		conversation = session.get(Conversation.class,conversationId);		
+		session.getTransaction().commit();
+		session.close();
+		return conversation;
 
 	}
 
@@ -63,9 +78,12 @@ public class ConversationDAO implements ConversationDAOInterface {
 	@Override
 	public Conversation insertConversation(Conversation conversation) {
 
-		conversation.setId(Data.conversationMap.size() + 1);
 		conversation.setLastModified(new Date());
-		Data.conversationMap.put(new Long(conversation.getId()), conversation);
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(conversation);		
+		session.getTransaction().commit();
+		session.close();
 		return conversation;
 
 	}
@@ -77,12 +95,15 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 *            conversation object.
 	 */
 	@Override
-	public Conversation updateConversationName(Conversation conversation) {
-
-		Conversation conv = Data.conversationMap.get(new Long(conversation.getId()));
-		conv.setLastModified(new Date());
-		conv.setName(conversation.getName());
-		return conv;
+	public Conversation updateConversationName(Conversation conversation) 
+	{
+		conversation.setLastModified(new Date());
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		session.update(conversation);	
+		session.getTransaction().commit();
+		session.close();
+		return conversation;
 	}
 
 	/**
@@ -94,7 +115,13 @@ public class ConversationDAO implements ConversationDAOInterface {
 	@Override
 	public Conversation deleteConversation(long conversationId) {
 
-		Conversation conversation = Data.conversationMap.remove(new Long(conversationId));
+		Conversation conversation = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		conversation = session.get(Conversation.class,conversationId);
+		session.delete(conversation);
+		session.getTransaction().commit();
+		session.close();
 		return conversation;
 
 	}
@@ -106,9 +133,15 @@ public class ConversationDAO implements ConversationDAOInterface {
 	 *            conversation Id.
 	 */
 	@Override
-	public Date getLastModified(long conversationId) {
-		Conversation conversation = Data.conversationMap.get(new Long(conversationId));
-		return conversation.getLastModified();
+	public Date getLastModified(long conversationId) 
+	{
+		Date lastModified = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		lastModified = session.get(Conversation.class,conversationId).getLastModified();		
+		session.getTransaction().commit();
+		session.close();
+		return lastModified;
 	}
 
 }

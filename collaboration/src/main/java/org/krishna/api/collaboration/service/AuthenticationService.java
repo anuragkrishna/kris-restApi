@@ -3,7 +3,6 @@ package org.krishna.api.collaboration.service;
 import java.util.Random;
 
 import org.krishna.api.collaboration.dao.CredentialsDAO;
-import org.krishna.api.collaboration.dao.TokenDAO;
 import org.krishna.api.collaboration.model.Credentials;
 
 public class AuthenticationService {
@@ -74,18 +73,16 @@ public class AuthenticationService {
 	}
 
 	/**
-	 * Delete user credentials.
+	 * Generate Token.
 	 * 
-	 * @param username
-	 *            user name
-	 * @param password
-	 *            password.
+	 * @param credentials user credentials.
+	 * 
 	 * @return
 	 */
 	public String generateToken(Credentials credentials) {
-		String tokenVal = getRandomString(10);
-		TokenDAO.getInstance().insertToken(tokenVal, credentials);
-		return tokenVal;
+		long tokenValue = getRandomLong(10);
+		CredentialsDAO.getInstance().insertToken(tokenValue, credentials);
+		return String.valueOf(tokenValue);
 	}
 
 	/**
@@ -95,24 +92,22 @@ public class AuthenticationService {
 	 *            Length of Random String
 	 * @return Random alphanumeric String of given length
 	 */
-	private String getRandomString(int length) {
-		Random rnd = new Random();
-		String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-		char[] text = new char[length];
-		for (int i = 0; i < length; i++) {
-			text[i] = characters.charAt(rnd.nextInt(characters.length()));
-		}
-		return new String(text);
+	private long getRandomLong(int length) {
+		long range = 1234567L;
+		Random r = new Random();
+		long number = (long)(r.nextDouble()*range);
+		return number;
 	}
 
 	/**
-	 * Find Token in data map.
+	 * Find User token
 	 * 
-	 * @param tokenVal
-	 *            token value
+	 * @param userName
+	 *            user name.
 	 * @return
 	 */
-	public Credentials findToken(String tokenVal) {
-		return TokenDAO.getInstance().findToken(tokenVal);
+	public Long findUserToken(String userName) {
+		Long tokenVal = new Long(CredentialsDAO.getInstance().findUserToken(userName));
+		return tokenVal;
 	}
 }
